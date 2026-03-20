@@ -93,37 +93,64 @@ fun ProfileCard(email: String, phone: String, location: String) {
         }
     }
 }
+@Composable
+fun LabeledTextField(label: String, value: String, onValueChange: (String) -> Unit) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(label) },
+        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
+    )
+}
 
 @Composable
-fun App() {
+fun App(viewModel: com.example.pertemuan_3.viewmodel.ProfileViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+    val uiState by viewModel.uiState.collectAsState()
     var showDetails by remember { mutableStateOf(false) }
 
-    MaterialTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
+    MaterialTheme(colorScheme = if (uiState.isDarkMode) darkColorScheme() else lightColorScheme()) {
+        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             Column(
-                modifier = Modifier.fillMaxSize().padding(top = 32.dp),
+                modifier = Modifier.fillMaxSize().padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                ProfileHeader(
-                    name = "Ragil Bayu Saputra",
-                    bio = "Mahasiswa Teknik Informatika ITERA\nMobile Developer"
-                )
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                Button(onClick = { showDetails = !showDetails }) {
-                    Text(if (showDetails) "Sembunyikan Info Kontak" else "Tampilkan Info Kontak")
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically) {
+                    Text("Dark Mode", modifier = Modifier.padding(end = 8.dp))
+                    Switch(checked = uiState.isDarkMode, onCheckedChange = { viewModel.toggleDarkMode(it) })
                 }
 
-                AnimatedVisibility(visible = showDetails) {
-                    ProfileCard(
-                        email = "ragil.123140128@student.itera.ac.id",
-                        phone = "+6289615900010",
-                        location = "Way Hui, Jati Agung, Lampung Selatan, Lampung,Indonesia"
-                    )
+                Spacer(modifier = Modifier.height(16.dp))
+                if (uiState.isEditing) {
+                    // TAMPILAN MODE EDIT
+                    Text("Edit Profile", fontSize = 24.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 16.dp))
+                    LabeledTextField(label = "Nama", value = uiState.name, onValueChange = { viewModel.updateName(it) })
+                    LabeledTextField(label = "Bio", value = uiState.bio, onValueChange = { viewModel.updateBio(it) })
+                    LabeledTextField(label = "Email", value = uiState.email, onValueChange = { viewModel.updateEmail(it) })
+                    LabeledTextField(label = "Telepon", value = uiState.phone, onValueChange = { viewModel.updatePhone(it) })
+                    LabeledTextField(label = "Lokasi", value = uiState.location, onValueChange = { viewModel.updateLocation(it) })
+
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(onClick = { viewModel.toggleEditMode() }, modifier = Modifier.fillMaxWidth()) {
+                        Text("Simpan Profil")
+                    }
+                } else {
+                    ProfileHeader(name = uiState.name, bio = uiState.bio)
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Button(onClick = { viewModel.toggleEditMode() }) {
+                        Text("Edit Profil")
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Button(onClick = { showDetails = !showDetails }) {
+                        Text(if (showDetails) "Sembunyikan Info Kontak" else "Tampilkan Info Kontak")
+                    }
+
+                    AnimatedVisibility(visible = showDetails) {
+                        ProfileCard(email = uiState.email, phone = uiState.phone, location = uiState.location)
+                    }
                 }
             }
         }
