@@ -1,32 +1,46 @@
-# Tugas Praktikum PAM - Pertemuan 4: State Management dan MVVM
+# Aplikasi Catatan (Notes App) - Pertemuan 3 - Pertemuan 5
 
-**Identitas Mahasiswa:**
-- **Nama:** Ragil Bayu Saputra
-- **NIM:** 123140128
+Aplikasi pencatat berbasis **Kotlin Multiplatform (KMP)** yang dibangun menggunakan **Jetpack Compose**. Proyek ini difokuskan pada implementasi arsitektur Navigasi (Routing) antar layar dan desain antarmuka pengguna (UI/UX) yang responsif menggunakan Compose Navigation.
+
+## 🚀 Fitur Utama
+
+* **Bottom Navigation Bar:** Navigasi utama yang persisten di bagian bawah layar untuk perpindahan cepat antar menu utama (Notes, Favorites, Profile).
+* **Notes Screen & FAB:** Layar utama yang menampilkan daftar catatan, dilengkapi dengan *Floating Action Button* (FAB) untuk menambah catatan baru.
+* **Add Note Form:** Formulir interaktif dengan *Top App Bar* (tombol kembali) dan *TextField* untuk menginput Judul serta Isi Catatan.
+* **Profile Screen Dinamis:** Halaman profil pengguna yang memuat informasi data diri, lengkap dengan fitur *Toggle Dark Mode* interaktif dan menu *collapsible* untuk informasi kontak.
+* **State Preserved Navigation:** Perpindahan antar layar (routing) yang mulus tanpa kehilangan *state* halaman sebelumnya.
+
+## 🛠️ Teknologi yang Digunakan
+
+* **Kotlin Multiplatform (KMP)**
+* **Jetpack Compose** (UI Toolkit)
+* **Compose Navigation** (`androidx.navigation:navigation-compose`)
+* **Material Design 3** (Material3 Components)
+
+## 📸 Tampilan Aplikasi (Screenshots)
+
+Berikut adalah hasil dari implementasi antarmuka dan navigasi aplikasi:
+
+### 1. Halaman Notes & Favorites
+Dua layar utama yang saling terhubung melalui Bottom Navigation. Halaman Notes dilengkapi dengan tombol aksi melayang (+).
+
+|         Halaman Notes          |            Halaman Favorites            |
+|:------------------------------:|:---------------------------------------:|
+| ![Notes Screen](bukti/Note.png) | ![Favorites Screen](bukti/Favorite.png) |
+
+### 2. Formulir Tambah Catatan (Add Note)
+Layar detail yang terbuka saat tombol FAB ditekan, mendemonstrasikan perpindahan *route* yang lebih dalam (nested navigation).
+
+|          Formulir Tambah Catatan          |
+|:-----------------------------------------:|
+| ![Add Note Screen](bukti/Tambah_note.png) |
+
+### 3. Halaman Profil
+Menampilkan identitas *Mobile Developer*, pengaturan tema aplikasi (Dark Mode), dan tombol aksi.
+
+|           Halaman Profil            |
+|:-----------------------------------:|
+| ![Profile Screen](bukti/Profile.png) |
 
 ---
-
-## Deskripsi Tugas
-Aplikasi "My Profile App" ini merupakan pengembangan dari tugas sebelumnya dengan menerapkan arsitektur **MVVM (Model-View-ViewModel)** dan **State Management** menggunakan Compose Multiplatform. Aplikasi ini telah memenuhi seluruh kriteria penilaian Pertemuan 4:
-
-1. **ViewModel Implementation (25%):** Menggunakan `ProfileViewModel` yang mengelola logika UI dan menyimpan *state* menggunakan `StateFlow`.
-2. **UI State Pattern (20%):** Menerapkan *Single Source of Truth* dengan `data class ProfileUiState` untuk menyimpan data nama, bio, email, telepon, lokasi, dan status mode (edit/dark mode).
-3. **State Hoisting (20%):** Membuat komponen `LabeledTextField` yang *stateless* untuk form edit, di mana *state* dan *event* ditarik ke atas (*hoisted*) ke *parent*.
-4. **Edit Feature (20%):** Mengimplementasikan form edit fungsional yang memungkinkan pembaruan data profil secara *real-time* melalui ViewModel.
-5. **Code Structure (15%):** Memisahkan kode ke dalam struktur folder yang rapi dan sesuai standar industri: `data/`, `viewmodel/`, dan `ui/`.
-6. **🌟 BONUS (+10%):** Mengimplementasikan fitur **Dark Mode Toggle** (Switch) dengan *state* yang disimpan dan dikelola di ViewModel, memberikan transisi tema yang *smooth*.
-
-*(Fitur dari Pertemuan 3 seperti penggunaan Layout, Reusable Composables, UI Components, Modifiers, dan AnimatedVisibility tetap dipertahankan dengan baik).*
-
----
-
-## Bukti Screenshot Aplikasi
-
-### 1. Tampilan Awal (Mode View & Dark Mode Aktif)
-![Tampilan Awal](bukti/TampilanAwal.png)
-
-### 2. Tampilan Info Kontak Ditampilkan
-![Output Kedua](bukti/Output%20kedua.png)
-
-### 3. Tampilan Form Edit Profile
-![Edit Profile](bukti/EditProfile.png)
+*Dibuat untuk memenuhi tugas Pemrograman Aplikasi Mobile.*
