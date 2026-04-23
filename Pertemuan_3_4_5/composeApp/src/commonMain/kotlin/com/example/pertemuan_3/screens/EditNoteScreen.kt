@@ -12,14 +12,25 @@ import com.example.pertemuan_3.data.NoteRepository
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddNoteScreen(navController: NavController, repository: NoteRepository) {
+fun EditNoteScreen(navController: NavController, repository: NoteRepository, noteId: Long) {
+    val note by repository.getNoteById(noteId).collectAsState(initial = null)
+
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
+    var isInitialized by remember { mutableStateOf(false) }
+
+    LaunchedEffect(note) {
+        if (note != null && !isInitialized) {
+            title = note!!.title
+            content = note!!.content
+            isInitialized = true
+        }
+    }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Tambah Catatan Baru") },
+                title = { Text("Edit Catatan") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(imageVector = Icons.AutoMirrored.Default.ArrowBack, contentDescription = "Kembali")
@@ -57,17 +68,17 @@ fun AddNoteScreen(navController: NavController, repository: NoteRepository) {
             Button(
                 onClick = {
                     if (title.isNotBlank() && content.isNotBlank()) {
-                        repository.insertNote(
+                        repository.updateNote(
+                            id = noteId,
                             title = title,
-                            content = content,
-                            createdAt = com.example.pertemuan_3.data.getCurrentTimeMillis()
+                            content = content
                         )
                         navController.popBackStack()
                     }
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Simpan")
+                Text("Simpan Perubahan")
             }
         }
     }
