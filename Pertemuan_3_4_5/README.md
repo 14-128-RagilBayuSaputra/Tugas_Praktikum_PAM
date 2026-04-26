@@ -1,6 +1,6 @@
-# Proyek Pengembangan Aplikasi Mobile - Pertemuan 3, 4, 5, & 7
+# Proyek Pengembangan Aplikasi Mobile - Pertemuan 3, 4, 5, 7, & 8
 
-Repositori ini berisi progres tugas mata kuliah Pemrograman Aplikasi Mobile (PAM). Untuk efisiensi struktur proyek, seluruh materi dan implementasi dari **Pertemuan 3, 4, 5, dan 7** dikonsolidasikan dan dikembangkan di dalam satu folder utama, yaitu folder `pertemuan_3`.
+Repositori ini berisi progres tugas mata kuliah Pengembangan Aplikasi Mobile (PAM). Untuk efisiensi struktur proyek, seluruh materi dan implementasi dari **Pertemuan 3 hingga 8** dikonsolidasikan dan dikembangkan di dalam satu folder utama, yaitu folder `pertemuan_3`.
 
 ## 📂 Struktur Proyek & Cakupan Materi
 
@@ -9,17 +9,19 @@ Meskipun berada di dalam folder `pertemuan_3`, proyek ini mencakup integrasi mat
 * **Pertemuan 3:** Inisialisasi proyek Kotlin Multiplatform (KMP) dan dasar-dasar UI dengan Jetpack Compose.
 * **Pertemuan 4:** Pengembangan komponen UI yang lebih kompleks, termasuk implementasi Profile Screen, Toggle Dark Mode, dan State Management dasar.
 * **Pertemuan 5:** Implementasi sistem navigasi antar layar (Routing) menggunakan Compose Navigation, pembuatan Bottom Navigation Bar, dan integrasi antar halaman.
-* **Pertemuan 7:** Inisialisasi Database lokal menggunakan **SQLDelight** untuk mengimplementasikan logika CRUD (Create, Read, Update, Delete) secara penuh, serta integrasi sistem waktu lokal menggunakan **Kotlinx Datetime** dengan arsitektur `expect`/`actual` untuk multiplatform.
+* **Pertemuan 7:** Inisialisasi Database lokal menggunakan **SQLDelight** untuk mengimplementasikan logika CRUD secara penuh, serta integrasi sistem waktu lokal dengan **Kotlinx Datetime**.
+* **Pertemuan 8 (Terbaru):** Refactor arsitektur menggunakan **Dependency Injection (Koin)**, serta pemanfaatan pola `expect`/`actual` untuk mengakses fitur native platform (**Device Info** dan **Network Monitor**).
 
 *(Catatan: Tugas Pertemuan 6 merupakan proyek terpisah mengenai News API dan tidak digabungkan dalam repositori ini).*
 
 ## 🚀 Fitur Utama Saat Ini
 
-* **Sistem CRUD Catatan (Full):** Kemampuan lengkap untuk **T**ambah, **B**aca, **E**dit, dan **H**apus catatan secara permanen di database lokal.
-* **Sinkronisasi Data Real-Time:** Menggunakan `Flow` dari SQLDelight untuk memastikan data di layar UI selalu ter-*refresh* secara otomatis saat ada perubahan di database.
-* **Format Waktu Dinamis:** Menyimpan dan menampilkan waktu pembuatan/perubahan catatan menggunakan format tanggal dan jam lokal perangkat yang diambil langsung dari sistem OS.
-* **Navigasi Terpadu:** Menggunakan `NavHost` untuk mengelola perpindahan antar layar secara *seamless* beserta *Bottom Navigation Bar* sebagai menu akses cepat.
-* **Profile Management:** Tampilan profil mahasiswa Teknik Informatika yang interaktif dengan fitur Dark Mode.
+* **Sistem CRUD Catatan (Full):** Kemampuan lengkap untuk menambah, membaca, mengedit, dan menghapus catatan di database lokal secara sinkron.
+* **Dependency Injection Terpusat:** Pengelolaan *instance* (seperti Database, Repository, dan Sensor) secara efisien dan otomatis menggunakan **Koin**.
+* **Pemantau Jaringan (Network Monitor):** Deteksi status koneksi internet secara *real-time* (memunculkan indikator peringatan otomatis saat perangkat *offline*).
+* **Deteksi Perangkat (Device Info):** Membaca dan menampilkan spesifikasi *hardware* (Model HP) dan versi sistem operasi native langsung ke layar UI profil.
+* **Navigasi Terpadu:** Menggunakan `NavHost` untuk mengelola perpindahan antar layar beserta *Bottom Navigation Bar*.
+* **Profile Management:** Tampilan profil interaktif dengan informasi kontak, fitur Edit Mode, dan Toggle Dark Mode.
 
 ## 🛠️ Teknologi yang Digunakan
 
@@ -27,23 +29,20 @@ Meskipun berada di dalam folder `pertemuan_3`, proyek ini mencakup integrasi mat
 * **Jetpack Compose & Material Design 3**
 * **Compose Navigation**
 * **SQLDelight (Local Database)**
-* **Kotlinx Datetime**
+* **Koin (Dependency Injection)**
+* **Kotlinx Coroutines & Flow**
 
 ## 📸 Dokumentasi (Screenshots)
 
 Berikut adalah dokumentasi visual dari fitur-fitur aplikasi yang telah diimplementasikan:
 
-| Halaman Notes (Daftar Catatan) |         Formulir Tambah Catatan         |     Hasil Setelah Menambah Catatan      |
-|:------------------------------:|:---------------------------------------:|:---------------------------------------:|
-| ![Notes List](bukti/notes.png) | ![Add Note Form](bukti/isi_catatan.png) | ![Result After Adding](bukti/hasil.png) |
-
-|           Formulir Edit Catatan           |       Hasil Setelah Mengedit Catatan        |
+|     Catatan Normal (Online & Koin DI)     |      Catatan Offline (Network Monitor)      |
 |:-----------------------------------------:|:-------------------------------------------:|
-| ![Edit Note Form](bukti/edit_catatan.png) | ![Result After Editing](bukti/hasil_edit.png) |
+| ![Notes Online](bukti/AirplaneMode_OFF.png) | ![Notes Offline](bukti/AirplaneMode_ON.png) |
 
-| Halaman Favorites | Halaman Profile |
-| :---: | :---: |
-| ![Favorites Screen](bukti/Favorite.png) | ![Profile Screen](bukti/Profile.png) |
+|      Halaman Profile (Device Info)      | Halaman Favorites |
+|:---------------------------------------:|:---:|
+| ![Profile Screen](bukti/NewProfile.png) | ![Favorites Screen](bukti/Favorite.png) |
 
 ---
 *Dibuat oleh Ragil Bayu Saputra - Mahasiswa Teknik Informatika.*

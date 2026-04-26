@@ -1,4 +1,5 @@
 package com.example.pertemuan_3.screens
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -19,6 +20,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+
+import org.koin.compose.koinInject
+import com.example.pertemuan_3.data.DeviceInfo
+
 @Composable
 fun ProfileHeader(name: String, bio: String) {
     Column(
@@ -53,6 +58,7 @@ fun ProfileHeader(name: String, bio: String) {
         )
     }
 }
+
 @Composable
 fun InfoItem(icon: ImageVector, text: String) {
     Row(
@@ -71,6 +77,7 @@ fun InfoItem(icon: ImageVector, text: String) {
         Text(text = text, fontSize = 16.sp)
     }
 }
+
 @Composable
 fun ProfileCard(email: String, phone: String, location: String) {
     Card(
@@ -93,6 +100,32 @@ fun ProfileCard(email: String, phone: String, location: String) {
         }
     }
 }
+
+@Composable
+fun DeviceInfoCard(deviceInfo: DeviceInfo) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+    ) {
+        Column(modifier = Modifier.padding(16.dp).fillMaxWidth()) {
+            Text(
+                text = "Informasi Perangkat",
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(bottom = 12.dp)
+            )
+            Text(text = "📱 Model: ${deviceInfo.getDeviceName()}", fontSize = 16.sp)
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "⚙️ OS: ${deviceInfo.getOsVersion()}", fontSize = 16.sp)
+        }
+    }
+}
+
 @Composable
 fun LabeledTextField(label: String, value: String, onValueChange: (String) -> Unit) {
     OutlinedTextField(
@@ -108,6 +141,8 @@ fun ProfileScreen(viewModel: com.example.pertemuan_3.viewmodel.ProfileViewModel 
     val uiState by viewModel.uiState.collectAsState()
     var showDetails by remember { mutableStateOf(false) }
 
+    val deviceInfo = koinInject<DeviceInfo>()
+
     MaterialTheme(colorScheme = if (uiState.isDarkMode) darkColorScheme() else lightColorScheme()) {
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             Column(
@@ -121,7 +156,6 @@ fun ProfileScreen(viewModel: com.example.pertemuan_3.viewmodel.ProfileViewModel 
 
                 Spacer(modifier = Modifier.height(16.dp))
                 if (uiState.isEditing) {
-                    // TAMPILAN MODE EDIT
                     Text("Edit Profile", fontSize = 24.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 16.dp))
                     LabeledTextField(label = "Nama", value = uiState.name, onValueChange = { viewModel.updateName(it) })
                     LabeledTextField(label = "Bio", value = uiState.bio, onValueChange = { viewModel.updateBio(it) })
@@ -151,6 +185,10 @@ fun ProfileScreen(viewModel: com.example.pertemuan_3.viewmodel.ProfileViewModel 
                     AnimatedVisibility(visible = showDetails) {
                         ProfileCard(email = uiState.email, phone = uiState.phone, location = uiState.location)
                     }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    DeviceInfoCard(deviceInfo = deviceInfo)
                 }
             }
         }

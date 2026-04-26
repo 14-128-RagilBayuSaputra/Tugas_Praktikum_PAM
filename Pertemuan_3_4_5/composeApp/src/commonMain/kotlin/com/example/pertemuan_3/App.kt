@@ -19,18 +19,15 @@ import com.example.pertemuan_3.screens.AddNoteScreen
 import com.example.pertemuan_3.screens.FavoritesScreen
 import com.example.pertemuan_3.screens.NotesScreen
 import com.example.pertemuan_3.screens.ProfileScreen
-
-// --- IMPORT BARU UNTUK DATABASE ---
-import com.example.pertemuan_3.db.DatabaseDriverFactory
-import com.example.notes.db.NotesDatabase
 import com.example.pertemuan_3.data.NoteRepository
 
+import org.koin.compose.koinInject
+
 @Composable
-fun App(driverFactory: DatabaseDriverFactory) {
+fun App() {
     val navController = rememberNavController()
 
-    val database = NotesDatabase(driverFactory.createDriver())
-    val repository = NoteRepository(database)
+    val repository = koinInject<NoteRepository>()
 
     MaterialTheme {
         Surface(
@@ -46,7 +43,6 @@ fun App(driverFactory: DatabaseDriverFactory) {
                     startDestination = Screen.Notes.route,
                     modifier = Modifier.padding(paddingValues).fillMaxSize()
                 ) {
-                    // --- 3. OPER KASIR KE HALAMAN YANG MEMBUTUHKAN CATATAN ---
                     composable(Screen.Notes.route) {
                         NotesScreen(navController = navController, repository = repository)
                     }
