@@ -2,7 +2,6 @@ package com.example.pertemuan_3
 
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.example.pertemuan_3.screens.EditNoteScreen
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -19,14 +18,15 @@ import com.example.pertemuan_3.screens.AddNoteScreen
 import com.example.pertemuan_3.screens.FavoritesScreen
 import com.example.pertemuan_3.screens.NotesScreen
 import com.example.pertemuan_3.screens.ProfileScreen
+import com.example.pertemuan_3.screens.EditNoteScreen
 import com.example.pertemuan_3.data.NoteRepository
-
+import com.example.pertemuan_3.screens.ChatScreen
+import com.example.pertemuan_3.viewmodel.ChatViewModel
 import org.koin.compose.koinInject
 
 @Composable
 fun App() {
     val navController = rememberNavController()
-
     val repository = koinInject<NoteRepository>()
 
     MaterialTheme {
@@ -48,6 +48,12 @@ fun App() {
                     }
                     composable(Screen.Favorites.route) { FavoritesScreen() }
                     composable(Screen.Profile.route) { ProfileScreen() }
+
+                    composable("chat") {
+                        val chatViewModel = koinInject<ChatViewModel>()
+                        ChatScreen(viewModel = chatViewModel)
+                    }
+                    // ----------------------------------------------------
 
                     composable(Screen.AddNote.route) {
                         AddNoteScreen(navController = navController, repository = repository)

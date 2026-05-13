@@ -1,4 +1,5 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -7,9 +8,11 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
     id("app.cash.sqldelight") version "2.0.1"
+    alias(libs.plugins.kotlinSerialization)
 }
 
 kotlin {
+    jvmToolchain(17)
     androidTarget()
 
     listOf(
@@ -31,6 +34,7 @@ kotlin {
             implementation("app.cash.sqldelight:android-driver:2.0.1")
             implementation("io.insert-koin:koin-android:3.5.3")
             implementation("io.insert-koin:koin-androidx-compose:3.5.3")
+            implementation("io.ktor:ktor-client-android:2.3.8")
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -51,6 +55,9 @@ kotlin {
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
             implementation("io.insert-koin:koin-core:3.5.3")
             implementation("io.insert-koin:koin-compose:1.1.2")
+            implementation("io.ktor:ktor-client-core:2.3.8")
+            implementation("io.ktor:ktor-client-content-negotiation:2.3.8")
+            implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.8")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -72,6 +79,19 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+        val localProps = rootProject.file("local.properties")
+        val properties = Properties()
+        if (localProps.exists()) {
+            properties.load(localProps.inputStream())
+        }
+        buildConfigField("String", "GEMINI_API_KEY", "\"${properties.getProperty("GEMINI_API_KEY", "")}\"")
+    }
+    buildFeatures {
+        buildConfig = true
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     packaging {
         resources {
@@ -82,10 +102,6 @@ android {
         getByName("release") {
             isMinifyEnabled = false
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
     }
 }
 

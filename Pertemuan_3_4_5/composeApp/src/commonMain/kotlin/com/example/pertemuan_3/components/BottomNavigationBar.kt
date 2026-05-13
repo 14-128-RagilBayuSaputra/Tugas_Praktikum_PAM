@@ -10,6 +10,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.pertemuan_3.navigation.BottomNavItem
 import com.example.pertemuan_3.navigation.Screen
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AutoAwesome
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
@@ -39,5 +41,20 @@ fun BottomNavigationBar(navController: NavController) {
                 }
             )
         }
+
+        NavigationBarItem(
+            icon = { Icon(imageVector = Icons.Default.AutoAwesome, contentDescription = "AI Chat") },
+            label = { Text("AI") },
+            selected = currentRoute == "chat",
+            onClick = {
+                navController.navigate("chat") {
+                    popUpTo(Screen.Notes.route) {
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
+        )
     }
 }
