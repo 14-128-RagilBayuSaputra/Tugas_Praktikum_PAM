@@ -3,11 +3,13 @@ package com.example.pertemuan_3.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pertemuan_3.data.AIRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 data class ChatMessage(
     val text: String,
@@ -39,19 +41,25 @@ class ChatViewModel(
         viewModelScope.launch {
             aiRepository.chat(message)
                 .onSuccess { response ->
-                    _uiState.update { state ->
-                        state.copy(
-                            messages = state.messages + ChatMessage(text = response, isUser = false),
-                            isLoading = false
-                        )
+                    // Memaksa pembaruan state kembali ke Main UI Thread
+                    withContext(Dispatchers.Main) {
+                        _uiState.update { state ->
+                            state.copy(
+                                messages = state.messages + ChatMessage(text = response, isUser = false),
+                                isLoading = false
+                            )
+                        }
                     }
                 }
                 .onFailure { error ->
-                    _uiState.update { state ->
-                        state.copy(
-                            error = error.message ?: "Terjadi kesalahan pada jaringan",
-                            isLoading = false
-                        )
+                    // Memaksa pembaruan error kembali ke Main UI Thread
+                    withContext(Dispatchers.Main) {
+                        _uiState.update { state ->
+                            state.copy(
+                                error = error.message ?: "Terjadi kesalahan pada jaringan",
+                                isLoading = false
+                            )
+                        }
                     }
                 }
         }

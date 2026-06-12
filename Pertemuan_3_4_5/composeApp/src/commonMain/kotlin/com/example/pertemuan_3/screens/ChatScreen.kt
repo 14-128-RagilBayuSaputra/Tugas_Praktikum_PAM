@@ -24,11 +24,11 @@ fun ChatScreen(viewModel: ChatViewModel) {
 
     Column(modifier = Modifier.fillMaxSize()) {
 
-        uiState.error?.let { errorMsg ->
+        if (uiState.error != null) {
             Text(
-                text = errorMsg,
+                text = "Error: ${uiState.error}",
                 color = MaterialTheme.colorScheme.error,
-                modifier = Modifier.padding(8.dp).fillMaxWidth()
+                modifier = Modifier.padding(16.dp)
             )
         }
 

@@ -12,15 +12,13 @@ import io.ktor.http.contentType
 
 class GeminiService(private val client: HttpClient) {
     private val baseUrl = "https://generativelanguage.googleapis.com/v1"
-
-    private val model = "gemini-1.5-flash"
-
+    private val model = "gemini-3.5-flash"
     private val conversationHistory = mutableListOf<Content>()
 
     suspend fun chat(userMessage: String): Result<String> = runCatching {
 
         if (ApiConfig.geminiApiKey.isEmpty()) {
-            throw Exception("API Key kosong! Pastikan local.properties sudah benar dan lakukan Rebuild.")
+            throw Exception("API Key kosong! Pastikan local.properties sudah benar.")
         }
 
         conversationHistory.add(
