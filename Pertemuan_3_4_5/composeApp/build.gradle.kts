@@ -61,10 +61,19 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation("io.insert-koin:koin-test:3.5.3")
+            implementation("app.cash.turbine:turbine:1.0.0")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
+        }
+        val androidUnitTest by getting {
+            dependencies {
+                implementation("io.mockk:mockk:1.13.9")
+                implementation("app.cash.sqldelight:sqlite-driver:2.0.1")
+            }
         }
     }
 }
@@ -107,6 +116,8 @@ android {
 
 dependencies {
     debugImplementation(libs.compose.uiTooling)
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.6.8")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.8")
 }
 
 compose.desktop {

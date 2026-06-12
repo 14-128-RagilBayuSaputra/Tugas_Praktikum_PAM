@@ -9,25 +9,26 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 
 class NoteRepository(database: NotesDatabase){
+
     private val queries = database.noteQueries
 
-    fun getAllNotes(): Flow<List<Note>> {
+    open fun getAllNotes(): Flow<List<Note>> {
         return queries.selectall().asFlow().mapToList(Dispatchers.Default)
     }
 
-    fun insertNote(title: String, content: String, createdAt: Long) {
+    open fun insertNote(title: String, content: String, createdAt: Long) {
         queries.insert(title = title, content = content, created_at = createdAt)
     }
 
-    fun updateNote(id: Long, title: String, content: String) {
+    open fun updateNote(id: Long, title: String, content: String) {
         queries.update(title = title, content = content, id = id)
     }
 
-    fun deleteNote(id: Long) {
+    open fun deleteNote(id: Long) {
         queries.delete(id = id)
     }
 
-    fun getNoteById(id: Long): Flow<Note?> {
+    open fun getNoteById(id: Long): Flow<Note?> {
         return queries.selectById(id).asFlow().mapToOneOrNull(Dispatchers.Default)
     }
 }

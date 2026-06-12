@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.example.pertemuan_3.viewmodel.ChatViewModel
 
@@ -33,7 +34,10 @@ fun ChatScreen(viewModel: ChatViewModel) {
         }
 
         LazyColumn(
-            modifier = Modifier.weight(1f).padding(horizontal = 8.dp)
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 8.dp)
+                .testTag("chat_list")
         ) {
             items(uiState.messages) { message ->
                 ChatBubble(
@@ -53,7 +57,9 @@ fun ChatScreen(viewModel: ChatViewModel) {
             OutlinedTextField(
                 value = inputText,
                 onValueChange = { inputText = it },
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f)
+                    .testTag("input_field"),
                 placeholder = { Text("Tanya Gemini...") },
                 maxLines = 3
             )
@@ -66,7 +72,8 @@ fun ChatScreen(viewModel: ChatViewModel) {
                 enabled = inputText.isNotBlank() && !uiState.isLoading,
                 colors = IconButtonDefaults.iconButtonColors(
                     contentColor = MaterialTheme.colorScheme.primary
-                )
+                ),
+                modifier = Modifier.testTag("send_button")
             ) {
                 Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Kirim")
             }
